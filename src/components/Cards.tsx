@@ -12,18 +12,23 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CollectionRepository} from '../repository/CollectionRepository';
-import {transform} from '@babel/core';
 
-const Cards = () => {
+const Cards = ({ onAddItem, onRemoveItem }) => {
   const [items, setItems] = useState([]);
-  const [buttonChange, setButtonChange] = useState(false);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const collectionRepository = new CollectionRepository();
-      const itemsTemp = await collectionRepository.list();
-      // @ts-ignore
-      setItems(itemsTemp);
+      try {
+        const itemsTemp = await collectionRepository.list();
+        // @ts-ignore
+        setItems(itemsTemp);
+        // @ts-ignore
+        setData(itemsTemp.map(() => false));
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     fetchData();
@@ -36,10 +41,19 @@ const Cards = () => {
           <Card key={index} style={styles.card}>
             <Card.Content>
               <View style={styles.cardImageContainerMachine}>
-                <Image style={styles.cardImageMachine} source={{uri: item.photo}} />
+                <Image
+                  style={styles.cardImageMachine}
+                  source={{uri: item.photo}}
+                />
                 <View style={styles.cardImageContainerOptions}>
-                  <Image style={styles.cardImageOptions} source={{uri: item.photo3}} />
-                  <Image style={styles.cardImageOptions} source={{uri: item.photo2}} />
+                  <Image
+                    style={styles.cardImageOptions}
+                    source={{uri: item.photo3}}
+                  />
+                  <Image
+                    style={styles.cardImageOptions}
+                    source={{uri: item.photo2}}
+                  />
                 </View>
               </View>
               <View style={styles.tittleBoard}>
@@ -82,22 +96,37 @@ const Cards = () => {
             <Card.Actions style={styles.cardButtons}>
               <TouchableOpacity
                 onPress={() => {
-                  setButtonChange(prevState => {
-                    return !prevState;
+                  if (data[index]) {
+                    onRemoveItem(item);
+                  } else {
+                    onAddItem(item);
+                  }
+
+                  setData(prevState => {
+                    const newData = [...prevState];
+                    newData[index] = !newData[index];
+
+                    return newData;
                   });
                 }}>
-                {!buttonChange ? (
-                  <Fontisto
-                    name="shopping-basket-add"
-                    size={25}
-                    color="#00A868"
-                  />
+                {!data[index] ? (
+                  <Text>
+                    Adicionar
+                    <Fontisto
+                      name="shopping-basket-add"
+                      size={25}
+                      color="#00A868"
+                    />
+                  </Text>
                 ) : (
-                  <Fontisto
-                    name="shopping-basket-remove"
-                    size={25}
-                    color="#B30919"
-                  />
+                  <Text>
+                    Remover
+                    <Fontisto
+                      name="shopping-basket-remove"
+                      size={25}
+                      color="#B30919"
+                    />
+                  </Text>
                 )}
               </TouchableOpacity>
             </Card.Actions>

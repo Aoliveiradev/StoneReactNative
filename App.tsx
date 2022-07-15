@@ -3,7 +3,6 @@ import Home from './src/pages/Home';
 import Cart from './src/pages/Cart';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Cards from "./src/components/Cards";
 
 const RootStack = createNativeStackNavigator();
 

@@ -4,7 +4,7 @@ import {fromFetch} from 'rxjs/fetch';
 
 export class CollectionRepository {
   private basePath =
-    'https://gist.githubusercontent.com/Aoliveiradev/8f3e4f5b0cc983e511af13eb3866fe4f/raw/27df870091a3d05b44925a6b8ad41cd031cc4276/stone_list.json';
+    'https://gist.githubusercontent.com/Aoliveiradev/f88a9d4ea41b917c483c8a0846a97f50/raw/3e34803b1c4dc264887006e5a0cface27d83f7fe/stone_list.json';
 
   public list() {
     return fromFetch<CollectionListResponse>(this.basePath, {

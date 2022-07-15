@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: '#EAF5F3',
   },
   cards: {
     flex: 1,

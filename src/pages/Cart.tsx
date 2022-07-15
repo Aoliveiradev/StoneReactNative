@@ -9,21 +9,30 @@ import {
 } from 'react-native';
 import TopBar from '../components/TopBar';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Button, Checkbox} from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
 const Cart = props => {
   const cart = props.route.params.cart || [];
   const [checked, setChecked] = React.useState(false);
+
   let total = 0;
 
   cart.forEach((item: any, index: number) => {
     total = item.valor + total;
   });
 
+  const totalParcelado = total / 12;
+
+  const toCurrency = (number: number): string => {
+    return number.toFixed(2).replace('.', ',');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TopBar cart={cart} />
-      <Text style={styles.itemsCountText}>{cart.length} produtos adicionados:</Text>
+      <Text style={styles.itemsCountText}>
+        {cart.length} produtos adicionados:
+      </Text>
       <View style={styles.cardContainer}>
         {cart.map((item: any, index: number) => {
           return (
@@ -34,7 +43,10 @@ const Cart = props => {
               <Text style={styles.cardTittle}>{item.name}</Text>
               <Text style={styles.cardSubTittle}>{item.subName}</Text>
               <View style={styles.cardValor}>
-                <Text>R$: {item.valor}</Text>
+                <Text style={styles.cardValorText}>
+                  <Text style={styles.cardValorTextSymbol}>R$:</Text>{' '}
+                  {toCurrency(item.valor)}
+                </Text>
               </View>
               <TouchableOpacity style={styles.cardIcon}>
                 <MaterialIcons name="delete-outline" size={25} color="red" />
@@ -45,8 +57,11 @@ const Cart = props => {
       </View>
       <View style={styles.finalizePurchaseTextSection}>
         <Text style={styles.finalizePurchaseText}>
-          <Text style={styles.amount}>Valor Total: 12x de R$ {total/12}</Text>
-          {'\n'}à vista por R$ {total}{'\n'}
+          <Text style={styles.amount}>
+            Valor Total: 12x de R$ {toCurrency(totalParcelado)}
+          </Text>
+          {'\n'} à vista por R$ {toCurrency(total)}
+          {'\n'}
           {'\n'}
           <Text style={styles.shipping}>Frete Grátis</Text>
           {'\n'}Prazos de entrega: 3 a 10 dias úteis{'\n'}
@@ -60,10 +75,14 @@ const Cart = props => {
             setChecked(!checked);
           }}
         />
-        <Text>Concordo com a <Text style={styles.terms}>Política de Privacidade</Text> e <Text style={styles.conditions}>Termos e Condições</Text></Text>
+        <Text style={styles.termsAndConditionsText}>
+          Concordo com a{' '}
+          <Text style={styles.terms}>Política de Privacidade</Text> e{' '}
+          <Text style={styles.conditions}>Termos e Condições</Text>
+        </Text>
       </View>
       <View style={styles.finalizePurchaseButton}>
-        <TouchableOpacity onPress={() => console.log('Pressed')}>
+        <TouchableOpacity onPress={() => console.log(total)}>
           <Text style={styles.finalizePurchaseButtonText}>Fechar Pedido</Text>
         </TouchableOpacity>
       </View>
@@ -76,7 +95,7 @@ export default Cart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#EAF5F3', //#EAF5F3 , #A3A3A3
   },
   itemsCountText: {
     color: '#00A868',
@@ -92,12 +111,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   card: {
-    margin: 20,
+    margin: 10,
     padding: 5,
-    height: '12%',
-    backgroundColor: 'white',
+    height: '15%',
+    backgroundColor: 'white', //#EAF5F3 , #A3A3A3
     flexDirection: 'row',
-    width: '90%',
+    width: '96%',
     borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: {
@@ -112,7 +131,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   image: {
-    marginTop: -30,
+    marginTop: -15,
     marginLeft: 10,
     width: 40,
     height: 80,
@@ -127,7 +146,7 @@ const styles = StyleSheet.create({
   },
   cardSubTittle: {
     fontSize: 15,
-    color: 'black',
+    color: '#48f924',
     margin: 5,
     alignSelf: 'center',
   },
@@ -135,6 +154,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     flex: 1,
+  },
+  cardValorText: {
+    color: 'black',
+  },
+  cardValorTextSymbol: {
+    fontWeight: 'bold',
   },
   cardIcon: {
     alignSelf: 'center',
@@ -147,10 +172,12 @@ const styles = StyleSheet.create({
   finalizePurchaseText: {
     textAlign: 'right',
     fontSize: 12,
+    color: 'black',
   },
   amount: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'black',
   },
   shipping: {
     fontSize: 15,
@@ -161,6 +188,11 @@ const styles = StyleSheet.create({
   },
   terms: {
     color: '#48f924',
+  },
+  termsAndConditionsText: {
+    alignSelf: 'center',
+    fontSize: 14,
+    color: 'black',
   },
   conditions: {
     color: '#48f924',

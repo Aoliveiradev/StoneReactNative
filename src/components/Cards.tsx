@@ -13,7 +13,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {CollectionRepository} from '../repository/CollectionRepository';
 
-const Cards = ({ onAddItem, onRemoveItem }) => {
+const Cards = ({onAddItem, onRemoveItem}) => {
   const [items, setItems] = useState([]);
   const [data, setData] = useState([]);
 
@@ -110,23 +110,17 @@ const Cards = ({ onAddItem, onRemoveItem }) => {
                   });
                 }}>
                 {!data[index] ? (
-                  <Text>
-                    Adicionar
-                    <Fontisto
-                      name="shopping-basket-add"
-                      size={25}
-                      color="#00A868"
-                    />
-                  </Text>
+                  <Fontisto
+                    name="shopping-basket-add"
+                    size={25}
+                    color="#00A868"
+                  />
                 ) : (
-                  <Text>
-                    Remover
-                    <Fontisto
-                      name="shopping-basket-remove"
-                      size={25}
-                      color="#B30919"
-                    />
-                  </Text>
+                  <Fontisto
+                    name="shopping-basket-remove"
+                    size={25}
+                    color="#B30919"
+                  />
                 )}
               </TouchableOpacity>
             </Card.Actions>
@@ -152,6 +146,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   card: {
+    backgroundColor: '#ffff',
     width: '48%',
     shadowColor: '#000',
     shadowOffset: {
